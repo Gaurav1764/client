@@ -1,7 +1,12 @@
 import axios from "axios";
 
+let baseURL = import.meta.env.VITE_API_BASE_URL || "";
+if (!baseURL.endsWith("/api") && !baseURL.endsWith("/api/")) {
+  baseURL = baseURL.replace(/\/$/, "") + "/api";
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL,
 
   headers: {
     "Content-Type": "application/json",
@@ -18,7 +23,7 @@ const api = axios.create({
 
 export const submitContact = async (formData) => {
   try {
-    const response = await api.post("/api/contact", formData);
+    const response = await api.post("/contact", formData);
 
     return response.data;
   } catch (error) {
@@ -42,7 +47,7 @@ export const submitContact = async (formData) => {
 
 export const getContacts = async () => {
   try {
-    const response = await api.get("/api/admin/contacts");
+    const response = await api.get("/admin/contacts");
 
     return response.data;
   } catch (error) {
@@ -66,7 +71,7 @@ export const getContacts = async () => {
 export const deleteContact = async (id) => {
   try {
     const response = await api.delete(
-      `/api/admin/contacts/${id}`
+      `/admin/contacts/${id}`
     );
 
     return response.data;
